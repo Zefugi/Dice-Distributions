@@ -1,40 +1,38 @@
 ﻿using System.Text;
 
-var str = new StringBuilder();
+var distribution = SumChanceDistribution(new int[] { 4, 4 });
+OutputDistributionGraph(distribution);
 
-var distributions = SumChanceDistribution(new int[] { 4, 4 });
-OutputDistributionGraph(distributions);
-
-void OutputDistribution(int[] distributions)
+void OutputDistribution(int[] distribution)
 {
-    for (int i = 1; i < distributions.Length; i++)
-        Console.WriteLine($"{string.Format("{0:00}", i)}  {string.Format("{0:00}", distributions[i])}");
+    for (int i = 1; i < distribution.Length; i++)
+        Console.WriteLine($"{string.Format("{0:00}", i)}  {string.Format("{0:00}", distribution[i])}");
 }
 
-void OutputDistributionGraph(int[] distributions)
+void OutputDistributionGraph(int[] distribution)
 {
     var str = new StringBuilder();
-    int maxValue = MaxValue(distributions);
+    int maxValue = MaxValue(distribution);
     for(int value = maxValue; value > 0; value--)
     {
         str.AppendFormat("{0:00}  ", value);
-        for (int i = 1; i < distributions.Length; i++)
-            str.Append((distributions[i] >= value) ? @"/\  " : "--  ");
+        for (int i = 1; i < distribution.Length; i++)
+            str.Append((distribution[i] >= value) ? @"/\  " : "--  ");
         str.AppendLine();
     }
     str.Append("    ");
-    for (int i = 1; i < distributions.Length; i++)
+    for (int i = 1; i < distribution.Length; i++)
         str.AppendFormat("{0:00}  ", i);
     Console.WriteLine(str);
 }
 
-int[] SumChanceDistribution(int[] dice, int diceOffset = 0)
+int[] SumChanceDistribution(int[] dice)
 {
     var maxSum = MaxSum(dice);
-    var distributions = new int[maxSum + 1];
+    var distribution = new int[maxSum + 1];
     for (int i = 1; i <= maxSum; i++)
-        distributions[i] = SumChance(i, dice);
-    return distributions;
+        distribution[i] = SumChance(i, dice);
+    return distribution;
 }
 
 int SumChance(int sum, int[] dice, int diceOffset = 0)
